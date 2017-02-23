@@ -1,0 +1,4 @@
+sceneSetups:
+- path: C:/Users/Public/Documents/Unity Projects/AR-2016-05-31/AR/Assets/_Scenes/scene2.unity
+  isLoaded: 1
+  isActive: 1
