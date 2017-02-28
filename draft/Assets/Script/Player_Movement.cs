@@ -42,7 +42,6 @@ public class Player_Movement : MonoBehaviour {
         }
         trigger = false;
         transform.RotateAround(center, Vector3.up, current_speed * Time.deltaTime);
-
     }
     void FixedUpdate()
     {
