@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Arrow_control : MonoBehaviour {
     public float angle = 0.0f;
-    public GameObject bow, arrowSpawner, arrow, arrowClone;
+    public GameObject bow, arrowSpawner;//, arrow, arrowClone;
+    ArrowSpawner arrowSpawnerScript;
     // Vector3 v3 = Vector3.zero;
     public int power = 0;
     public float arrowSpeed = 50.0f;
@@ -18,24 +19,25 @@ public class Arrow_control : MonoBehaviour {
         middle = new Vector2(Screen.width / 2, Screen.height / 2);
         if (!bow) bow = GameObject.FindGameObjectsWithTag("Bow")[0];
         if (!arrowSpawner) arrowSpawner = GameObject.FindGameObjectsWithTag("ArrowSpawner")[0];
+        arrowSpawnerScript = arrowSpawner.GetComponent<ArrowSpawner>();
        // if (!arrowSpawner) arrow=
 
         Screen.fullScreen = false;
-        Cursor.visible = false;
+       // Cursor.visible = false;
         //Cursor.lockState = wantedMode;
         // arrow.transform.eulerAngles = v3;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Jump"))
+      /*  if (Input.GetButtonDown("Jump"))
         {
             print("Fire!");
 
             arrowClone = Instantiate(arrow, transform.position, transform.rotation);
             arrow.GetComponent<Rigidbody>().velocity= transform.right * arrowSpeed;
 
-        }
+        }*/
         if (Input.GetButtonDown("Cancel")) { 
             print("escape");
             Screen.fullScreen = !Screen.fullScreen;
@@ -72,10 +74,11 @@ public class Arrow_control : MonoBehaviour {
             mouseDown = false;
             firstPosition = new Vector2();
             print("up");
-            power = 0;
+            
             print(power);
             if(resetPose) bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, 45f);
-            
+            arrowSpawnerScript.fireArrow(power*150);
+            power = 0;
         }
 
     }
