@@ -81,8 +81,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Arrow_control.cs" />
+    <Compile Include="Assets\EnemyAnimController.cs" />
     <Compile Include="Assets\Movement.cs" />
     <Compile Include="Assets\Script\Camera_Movement.cs" />
+    <Compile Include="Assets\Script\Paralax_plane.cs" />
     <Compile Include="Assets\Script\Player_Movement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -23,13 +23,13 @@ public class Player_Movement : MonoBehaviour {
     void Update () {
         
         if (Input.GetKey("left")){
-            print("left arrow key is held down");
+           // print("left arrow key is held down");
             trigger = true;
             if (current_speed < speed)
                 current_speed++;
         }
         if (Input.GetKey("right")) { 
-            print("right arrow key is held down");
+          //  print("right arrow key is held down");
             trigger = true;
             if (current_speed > -speed)
                 current_speed--;
