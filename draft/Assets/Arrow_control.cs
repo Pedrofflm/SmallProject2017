@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Arrow_control : MonoBehaviour {
     public float angle = 0.0f;
-    public GameObject arrow;
+    public GameObject bow, arrowSpawner, arrow, arrowClone;
     // Vector3 v3 = Vector3.zero;
     public int power = 0;
+    public float arrowSpeed = 50.0f;
     public bool resetPose = false;
     
     private Vector2 middle, firstPosition;
@@ -15,7 +16,10 @@ public class Arrow_control : MonoBehaviour {
 
     void Start () {
         middle = new Vector2(Screen.width / 2, Screen.height / 2);
-        if(!arrow)  arrow= GameObject.FindGameObjectsWithTag("Arrow")[0];
+        if (!bow) bow = GameObject.FindGameObjectsWithTag("Bow")[0];
+        if (!arrowSpawner) arrowSpawner = GameObject.FindGameObjectsWithTag("ArrowSpawner")[0];
+       // if (!arrowSpawner) arrow=
+
         Screen.fullScreen = false;
         Cursor.visible = false;
         //Cursor.lockState = wantedMode;
@@ -24,6 +28,14 @@ public class Arrow_control : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetButtonDown("Jump"))
+        {
+            print("Fire!");
+
+            arrowClone = Instantiate(arrow, transform.position, transform.rotation);
+            arrow.GetComponent<Rigidbody>().velocity= transform.right * arrowSpeed;
+
+        }
         if (Input.GetButtonDown("Cancel")) { 
             print("escape");
             Screen.fullScreen = !Screen.fullScreen;
@@ -52,7 +64,7 @@ public class Arrow_control : MonoBehaviour {
             print(power);
             angle = Mathf.Rad2Deg * Mathf.Atan(h/d);
             if (d < 0) angle -= 180;
-            arrow.transform.localEulerAngles = new Vector3(arrow.transform.rotation.x, arrow.transform.rotation.y, angle+180);// Quaternion.Euler(arrow.transform.rotation.x, arrow.transform.rotation.y, angle);
+            bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, angle+180);// Quaternion.Euler(bow.transform.rotation.x, bow.transform.rotation.y, angle);
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -62,7 +74,7 @@ public class Arrow_control : MonoBehaviour {
             print("up");
             power = 0;
             print(power);
-            if(resetPose)arrow.transform.localEulerAngles = new Vector3(arrow.transform.rotation.x, arrow.transform.rotation.y, 45f);
+            if(resetPose) bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, 45f);
             
         }
 
