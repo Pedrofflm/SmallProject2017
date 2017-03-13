@@ -68,7 +68,7 @@ public class Arrow_control : MonoBehaviour {
             if (d < 0) angle -= 180;
             bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, angle+180);// Quaternion.Euler(bow.transform.rotation.x, bow.transform.rotation.y, angle);
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) &&power>0)
         {
             //fire arrow projectile
             mouseDown = false;
@@ -77,7 +77,7 @@ public class Arrow_control : MonoBehaviour {
             
             print(power);
             if(resetPose) bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, 45f);
-            arrowSpawnerScript.fireArrow(power*150);
+            arrowSpawnerScript.fireArrow(power);
             power = 0;
         }
 
