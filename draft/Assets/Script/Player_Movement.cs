@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player_Movement : MonoBehaviour {
 
@@ -9,41 +10,58 @@ public class Player_Movement : MonoBehaviour {
     public Rigidbody rb;
     public Vector3 center;
     private bool trigger;
+    private int version = 0;
     void Start () {
         //rb = GetComponent<Rigidbody>();
         GameObject st=GameObject.FindGameObjectsWithTag("Stage")[0];
         center=st.transform.position ;
-
-
+        version=GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
         current_speed = 0.0f;
-
+        print("////////////START//////////////"+version);
     }
 
     // Update is called once per frame
     void Update () {
-        
-        if (Input.GetButton("Left")){// Input.GetKey("left")
-           // print("left arrow key is held down");
-            trigger = true;
-            if (current_speed < speed)
-                current_speed++;
-        }
-        if (Input.GetButton("Right")) {//Input.GetKey("right")
-          //  print("right arrow key is held down");
-            trigger = true;
-            if (current_speed > -speed)
-                current_speed--;
-        }
-        if (!trigger)
+        if (version < 2)
         {
-            if (current_speed < 0) current_speed++;
-            if (current_speed > 0) current_speed--;
-
+            float translation = CrossPlatformInputManager.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
+          //  print("////////////translation//////////////" + translation);
+            //transform.Translate(0, 0, translation);
+            transform.RotateAround(center, Vector3.up, -translation * Time.deltaTime);
         }
-        trigger = false;
-        transform.RotateAround(center, Vector3.up, current_speed * Time.deltaTime);
+        else {
+            float translation = Input.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
+           // print("////////////translation//////////////" + translation);
+            //transform.Translate(0, 0, translation);
+            transform.RotateAround(center, Vector3.up, translation * Time.deltaTime);
+
+            /*if (Input.GetButton("Left")){// Input.GetKey("left")
+               // print("left arrow key is held down");
+                trigger = true;
+                if (current_speed < speed)
+                    current_speed++;
+            }
+            if (Input.GetButton("Right")) {//Input.GetKey("right")
+              //  print("right arrow key is held down");
+                trigger = true;
+                if (current_speed > -speed)
+                    current_speed--;
+            }
+            if (!trigger)
+            {
+                if (current_speed < 0) current_speed++;
+                if (current_speed > 0) current_speed--;
+
+            }
+            trigger = false;
+            transform.RotateAround(center, Vector3.up, current_speed * Time.deltaTime);
+            }*/
+        }  //
+
+
+
     }
-    void FixedUpdate()
+        void FixedUpdate()
     {
         
     }
