@@ -25,6 +25,7 @@ public class Arrow_control : MonoBehaviour {
         if (!arrowSpawner) arrowSpawner = GameObject.FindGameObjectsWithTag("ArrowSpawner")[0];
         arrowSpawnerScript = arrowSpawner.GetComponent<ArrowSpawner>();
         version=GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
+        print("Arrow_control versions found: "+version);
        // if (!arrowSpawner) arrow=
 
         Screen.fullScreen = false;
@@ -36,15 +37,8 @@ public class Arrow_control : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        /*  if (Input.GetButtonDown("Jump"))
-          {
-              print("Fire!");
-
-              arrowClone = Instantiate(arrow, transform.position, transform.rotation);
-              arrow.GetComponent<Rigidbody>().velocity= transform.right * arrowSpeed;
-
-          }*/
-        if (version < 2) {
+        
+        if (version > 2) {
             float d = CrossPlatformInputManager.GetAxis("AimHorizontal");//Input.GetAxis("Horizontal") * speed; //middle.x
             float h = CrossPlatformInputManager.GetAxis("AimVertical");//middle.y
             
@@ -70,8 +64,8 @@ public class Arrow_control : MonoBehaviour {
                
             }
 
-        }
-        else {
+        }else {
+            print("HERE");
             if (Input.GetButtonDown("Cancel"))
             {
                 print("escape");
@@ -110,12 +104,7 @@ public class Arrow_control : MonoBehaviour {
                 //fire arrow projectile
                 mouseDown = false;
                 firstPosition = new Vector2();
-                print("up");
-
-                print(power);
-                if (resetPose) bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, 45f);
-                arrowSpawnerScript.fireArrow(power);
-                power = 0;
+                fireArrow();
             }
 
         }
@@ -125,7 +114,7 @@ public class Arrow_control : MonoBehaviour {
     {
        
             //fire arrow projectile
-            print("up");
+           // print("up");
 
             print(power);
             if (resetPose) bow.transform.localEulerAngles = new Vector3(bow.transform.rotation.x, bow.transform.rotation.y, 45f);

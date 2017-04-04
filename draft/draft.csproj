@@ -81,6 +81,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\PlayerContainmentWallOffset.cs" />
     <Compile Include="Assets\Script\ArrowSpawner.cs" />
     <Compile Include="Assets\Script\Arrow_Power.cs" />
     <Compile Include="Assets\Script\Arrow_control.cs" />

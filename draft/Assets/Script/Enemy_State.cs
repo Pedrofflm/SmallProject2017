@@ -11,10 +11,14 @@ public class Enemy_State : MonoBehaviour {
     public GameObject text;
     public float restartTimer = 5;
     private bool gameover = false;
+    private int version = 0;
 	// Use this for initialization
 	void Start () {
         gameover = false;
         text.GetComponent<GUIText>().text="";
+        version = GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
+        print("Enemy_State versions found: " + version);
+        this.GetComponent<Player_State>();
     }
 
     // Update is called once per frame
