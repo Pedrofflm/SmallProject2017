@@ -40,7 +40,7 @@ public class Camera_Movement : MonoBehaviour {
     void Update() {
 
         // transform.RotateAround(center, Vector3.up, player.transform.position);
-        transform.LookAt(center);
+       
         
        // player=  GameObject.FindGameObjectsWithTag("Player")[0];
         switch (state)
@@ -106,7 +106,7 @@ public class Camera_Movement : MonoBehaviour {
             case 4:
                 break;
         }
-
+        transform.LookAt(center);
 
     }
 

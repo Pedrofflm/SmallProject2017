@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArrowSpawner : MonoBehaviour {
     public GameObject arrow, arrowClone;
-    public const float arrowVelocity=220;
+    public float arrowVelocity=220f, arrowPowerScaler=150f;
 	// Use this for initialization
 	void Start () {
 		
@@ -15,7 +15,7 @@ public class ArrowSpawner : MonoBehaviour {
 		
 	}
     public void fireArrow(int power = -1) {
-        float force = (power == -1)? arrowVelocity:(power * 150);
+        float force = (power == -1)? arrowVelocity:(power * arrowPowerScaler);
         
         print("arrow force: " + force);
         arrowClone = Instantiate(arrow, transform.position, transform.rotation) as GameObject;
