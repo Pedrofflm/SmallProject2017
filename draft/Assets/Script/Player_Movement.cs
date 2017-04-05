@@ -13,13 +13,17 @@ public class Player_Movement : MonoBehaviour {
     private bool trigger;
     private int version = 0;
     private Player_State pl;
+    private GameObject camera;
+    private Camera_Movement cameraS;
     void Start () {
         //rb = GetComponent<Rigidbody>();
         GameObject st=GameObject.FindGameObjectsWithTag("Stage")[0];
         center=st.transform.position ;
         version=GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
+        camera = GameObject.FindGameObjectsWithTag("MainCamera")[0];
+        cameraS = camera.GetComponent<Camera_Movement>();
         print("Player_Movement versions found: " + version);
-        current_speed = 0.0f;
+        current_speed = 15.0f;
         pl= GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<Player_State>();
         print("////////////START-player- "+pl.getState()+" //////////////"+version);
     }
@@ -47,7 +51,7 @@ public class Player_Movement : MonoBehaviour {
             if (translation > 0) pl.setState(2);
             if (translation < 0) pl.setState(3);
             transform.RotateAround(center, Vector3.up, translation * Time.deltaTime);
-
+           // if (cameraS.getState() == 3) { print("ROTATE!!"); camera.transform.RotateAround(center, Vector3.up, translation * Time.deltaTime); }
             /*if (Input.GetButton("Left")){// Input.GetKey("left")
                // print("left arrow key is held down");
                 trigger = true;
@@ -78,4 +82,6 @@ public class Player_Movement : MonoBehaviour {
     {
         
     }
+
+    public float getCurrentSpeed() {  return current_speed;}
 }

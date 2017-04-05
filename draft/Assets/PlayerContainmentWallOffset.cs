@@ -14,10 +14,10 @@ public class PlayerContainmentWallOffset : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider other) {
-        print("TRIGGERED WALL " + side);
+       // print("TRIGGERED WALL " + side);
         if (other.gameObject.tag == "Player")
         {
-            print("triggered by PLAYER " + side);
+          //  print("triggered by PLAYER " + side);
             int st=player.getState();
             switch (side)
             {

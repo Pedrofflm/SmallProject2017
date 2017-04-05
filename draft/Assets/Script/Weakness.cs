@@ -22,6 +22,7 @@ public class Weakness : MonoBehaviour {
             print("power collision :"+other.GetComponent<Arrow_Power>().power);
             if (other.GetComponent<Arrow_Power>().power == weaknessType) { 
                 es.decHP(weakness);
+
             }
             else { print("not enough altitude (power)"); }
             Destroy(other.gameObject);

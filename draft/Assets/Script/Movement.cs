@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour {
     GameObject st;
     // Use this for initialization
     void Start () {
-       st= GameObject.FindGameObjectsWithTag("Player")[0];
+       st= GameObject.FindGameObjectsWithTag("MainCamera")[0];
         
     }
 	

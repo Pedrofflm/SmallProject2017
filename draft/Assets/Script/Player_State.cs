@@ -20,7 +20,7 @@ public class Player_State : MonoBehaviour {
     void Start()
     {
         version = GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
-        print("Player_State versions found: " + version);
+     //   print("Player_State versions found: " + version);
     }
 
     // Update is called once per frame
