@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Camera_Movement : MonoBehaviour {
 
@@ -11,7 +12,7 @@ public class Camera_Movement : MonoBehaviour {
     // private Vector3 player_offset; //distance from player
     // private Vector3 scene_offset; //distance from player
     private float distPlayerCenter, rotOffset, playerOffset;
-    private int state = 0,previousState=0;
+    private int state = 0,previousState=0,version;
     private bool adjustingFlag = false;
     /*
         0-idle
@@ -30,6 +31,7 @@ public class Camera_Movement : MonoBehaviour {
         if (center == null) center = st.transform.position;
         playerState = GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<Player_State>();
         playerMov = player.GetComponent<Player_Movement>();
+        version = GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<BuildVersion>().getVersion();
         // player_offset = transform.position - player.transform.position;
         //scene_offset = transform.position - center;
         //distPlayerCenter = Vector3.Distance(player.transform.position, center);
@@ -69,8 +71,13 @@ public class Camera_Movement : MonoBehaviour {
                 //camera moves so that player is at right
                 break;
             case 3:
-                float translation = Input.GetAxis("Horizontal") * playerMov.getCurrentSpeed();
-                if (adjustingFlag) { 
+                float translation;// = Input.GetAxis("Horizontal") * playerMov.getCurrentSpeed();
+                if (version > 2) {
+                    translation =CrossPlatformInputManager.GetAxis("Horizontal") * playerMov.getCurrentSpeed(); } else
+                {
+                    translation = Input.GetAxis("Horizontal") * playerMov.getCurrentSpeed();
+                }
+                    if (adjustingFlag) { 
                     switch (previousState)
                     {
                         case 1:
