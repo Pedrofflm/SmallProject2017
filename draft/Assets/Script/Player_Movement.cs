@@ -7,7 +7,7 @@ public class Player_Movement : MonoBehaviour {
     // Use this for initialization
     public float angle = 0.0f;
     public float speed = 5.0f;
-    private float current_speed;
+    public float current_speed;
    // public Rigidbody rb;
     public Vector3 center;
     private bool trigger;
@@ -23,7 +23,7 @@ public class Player_Movement : MonoBehaviour {
         camera = GameObject.FindGameObjectsWithTag("MainCamera")[0];
         cameraS = camera.GetComponent<Camera_Movement>();
         print("Player_Movement versions found: " + version);
-        current_speed = 15.0f;
+       // current_speed = 15.0f;
         pl= GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<Player_State>();
         print("////////////START-player- "+pl.getState()+" //////////////"+version);
     }
@@ -32,7 +32,7 @@ public class Player_Movement : MonoBehaviour {
     void Update () {
         if (version > 2) //MOOOOBILEEEE!!!!!!!!!!!!!!!!1
         {
-            float translation = CrossPlatformInputManager.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
+            float translation = -(CrossPlatformInputManager.GetAxis("Horizontal") * current_speed);//Input.GetAxis("Horizontal") * speed;
             //  print("////////////translation//////////////" + translation);
             //transform.Translate(0, 0, translation);
             angle -= translation * Time.deltaTime;
@@ -42,7 +42,7 @@ public class Player_Movement : MonoBehaviour {
             transform.RotateAround(center, Vector3.up, translation * Time.deltaTime);
         }
         else {
-            float translation = Input.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
+            float translation = Input.GetAxis("Horizontal") * current_speed;//Input.GetAxis("Horizontal") * speed;
            // print("////////////translation//////////////" + translation);
             //transform.Translate(0, 0, translation);
             

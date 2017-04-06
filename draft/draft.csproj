@@ -81,7 +81,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\PlayerContainmentWallOffset.cs" />
     <Compile Include="Assets\Script\ArrowSpawner.cs" />
     <Compile Include="Assets\Script\Arrow_Power.cs" />
     <Compile Include="Assets\Script\Arrow_control.cs" />
@@ -91,6 +90,7 @@
     <Compile Include="Assets\Script\Enemy_State.cs" />
     <Compile Include="Assets\Script\Movement.cs" />
     <Compile Include="Assets\Script\Paralax_plane.cs" />
+    <Compile Include="Assets\Script\PlayerContainmentWallOffset.cs" />
     <Compile Include="Assets\Script\Player_Movement.cs" />
     <Compile Include="Assets\Script\Player_State.cs" />
     <Compile Include="Assets\Script\Weakness.cs" />

@@ -66,14 +66,14 @@ public class Camera_Movement : MonoBehaviour {
               //  print("difference angle: " + (rotOffset));
 
                // transform.RotateAround(center, Vector3.up, rotOffset);
-                print("rotating player to right");
+               // print("rotating player to right");
                 if (playerState.getState() == 2) { adjustingFlag=true; print("Camera STATE 3"); previousState = state; state = 3; }//go to 3
                 //camera moves so that player is at right
                 break;
             case 3:
                 float translation;// = Input.GetAxis("Horizontal") * playerMov.getCurrentSpeed();
                 if (version > 2) {
-                    translation =CrossPlatformInputManager.GetAxis("Horizontal") * playerMov.getCurrentSpeed(); } else
+                    translation =-(CrossPlatformInputManager.GetAxis("Horizontal") * playerMov.getCurrentSpeed()); } else
                 {
                     translation = Input.GetAxis("Horizontal") * playerMov.getCurrentSpeed();
                 }
