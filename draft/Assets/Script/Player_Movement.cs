@@ -35,11 +35,11 @@ public class Player_Movement : MonoBehaviour {
             float translation = CrossPlatformInputManager.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
             //  print("////////////translation//////////////" + translation);
             //transform.Translate(0, 0, translation);
-            if (translation == 0) pl.setState(1);
+            angle -= translation * Time.deltaTime;
+            if ((int)translation == 0) pl.setState(1);
             if (translation > 0) pl.setState(2);
             if (translation < 0) pl.setState(3);
-            angle -= translation * Time.deltaTime;
-            transform.RotateAround(center, Vector3.up, -translation * Time.deltaTime);
+            transform.RotateAround(center, Vector3.up, translation * Time.deltaTime);
         }
         else {
             float translation = Input.GetAxis("Horizontal") * speed;//Input.GetAxis("Horizontal") * speed;
