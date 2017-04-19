@@ -16,6 +16,7 @@ public class EnemyAnimController : MonoBehaviour
     public float cooldownDef, cooldownCur;
     public int attperformance = 0;
     bool at_dir = false;
+    int dir_change = 0;
     // Use this for initialization
     void Start()
     {
@@ -39,18 +40,17 @@ public class EnemyAnimController : MonoBehaviour
         //Triggering attacks
         random_num = Random.value;
 
-        //Is the enemy attacking
+        //Is the enemy attacking?
         switch (attackstate)
         {
             case 1:
-                if (cooldownCur > 1 && Mathf.DeltaAngle(p_angle, e_angle) >= -5 && Mathf.DeltaAngle(p_angle, e_angle) <= 5)
-                {
+             //   if (cooldownCur > 1 && Mathf.DeltaAngle(p_angle, e_angle) >= -5 && Mathf.DeltaAngle(p_angle, e_angle) <= 5){
 
-                    //Which attack is being performed?
-                    switch (attperformance)
-                    {
-                        case 1:
-                            //Static Attack
+                //Which attack is being performed?
+                switch (attperformance)
+                {
+                    case 1:
+                        //Static Attack
                             sp_att1 = e_att_speed + 1;
                             if (at_dir == false)
                             {
@@ -63,7 +63,7 @@ public class EnemyAnimController : MonoBehaviour
                                 {
                                     at_dir = true;
                                 }
-                            }else {
+                            } else {
 
                                 if (d_attack.transform.position.y < init_pos_at)
                                 {
@@ -78,75 +78,111 @@ public class EnemyAnimController : MonoBehaviour
                                 }
                             }
 
-                            break;
+                        break;
 
-                        case 2:
-                            //Dynamic Attack
-                            sp_att2 = e_att_speed;
-                            if (at_dir == false)
+                    case 2:
+                        //Dynamic Attack
+                        sp_att2 = e_att_speed;
+
+                        float distance = Vector3.Distance(d_attack.transform.position, player.transform.position);
+                        float d_angle = d_attack.transform.eulerAngles.y;
+                        float angle = Mathf.DeltaAngle(p_angle, d_angle);
+                        if (at_dir == false)
+                        {
+                           
+                            //// Moving the club downwards
+                            if (d_attack.transform.position.y > 0.7f)
                             {
-                                //// Moving the club downwards
-                                if (d_attack.transform.position.y > 0.7f)
+                                //Depending on the position of player it does attack dyagonally to right
+                                if (Mathf.DeltaAngle(p_angle, e_angle) > 0)
                                 {
-                                    //Depending on the position of player it does attack dyagonally to right or left
-                                    if (Mathf.DeltaAngle(p_angle, e_angle) > 0)
-                                    {
-                                        print("Following Right");
+
+                                    if (dir_change == 2)
+                                    {                                      
+                                        d_attack.transform.Translate(0f, 0f, sp_att2*3 * Time.deltaTime);
+
+                                    } else {
+
+                                        //   print("Following Right dyn");
                                         d_attack.transform.Translate(0f, 0f, sp_att2 * Time.deltaTime);
                                         d_attack.transform.RotateAround(center, Vector3.up, -dyn_att_speed * Time.deltaTime);
-
+                                    
                                     }
-                                    if (Mathf.DeltaAngle(p_angle, e_angle) < 0)
+
+                                    dir_change = 1;
+                                    if (Mathf.DeltaAngle(p_angle, d_angle)< -7)
                                     {
-                                        print("Following Left");
+                                        print("Brake!!!");
+                                        dir_change = 2;
+                                    }
+
+                                }
+                                //Depending on the position of player it does attack dyagonally to left
+                                if (Mathf.DeltaAngle(p_angle, e_angle) < 0)
+                                {
+                                    print("Angle between dummy and ruler"+ Mathf.DeltaAngle(d_angle, e_angle));
+                                    //print("Inside If");
+                                    if (dir_change == 1)
+                                    {
+                                        //Change direction - BRAKE
+                                        d_attack.transform.Translate(0f, 0f, sp_att2*3 * Time.deltaTime);
+                                    }
+                                    else
+                                    {
+                                  //      print("Following Left dyn");
                                         d_attack.transform.Translate(0f, 0f, sp_att2 * Time.deltaTime);
                                         d_attack.transform.RotateAround(center, Vector3.up, +dyn_att_speed * Time.deltaTime);
                                     }
+
+                                    dir_change = 2;
+                                    if (Mathf.DeltaAngle(p_angle, d_angle) > 7)
+                                    {
+                                        dir_change = 1;
+                                    }
                                     
-                                   
-                                }
-                                else
-                                {
-                                    at_dir = true;
                                 }
                             }
-                            else {
-
-                                if (d_attack.transform.position.y < init_pos_at)
-                                {
-                                    //Moving the club upwards
-                                    if (Mathf.DeltaAngle(p_angle, e_angle) > 0)
-                                    {
-                                        
-                                        d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);
-                                        d_attack.transform.RotateAround(center, Vector3.up, dyn_att_speed * Time.deltaTime);
-
-                                    }
-                                    if (Mathf.DeltaAngle(p_angle, e_angle) < 0)
-                                    {
-                                        
-                                        d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);
-                                        d_attack.transform.RotateAround(center, Vector3.up, -dyn_att_speed * Time.deltaTime);
-                                    }
-
-                                }
-                                else
-                                {
-                                    attackstate = 2;
-                                    print("Back to searching");
-                                    at_dir = false;
-                                }
+                            else
+                            {
+                                at_dir = true;
                             }
+                        }
+                        else {
+                            if (d_attack.transform.position.y < init_pos_at)
+                            {
+            
+                                //Moving the club upwards
+                                if (Mathf.DeltaAngle(p_angle, e_angle) > 0)
+                                {                                        
+                                    d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);
+                                }
+                                if (Mathf.DeltaAngle(p_angle, e_angle) < 0)
+                                {                                       
+                                    d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);                                  
+                                }
 
-                            break;
+                            }
+                            else
+                            {
+                                //Rotate to original position
+                                d_attack.transform.RotateAround(center, Vector3.up, Mathf.DeltaAngle(d_angle, e_angle));
 
-                        case 3:
-                            print("Ain't nobody got time fo dat!!!");
-                            attackstate = 2;
+                                //Go back to searching
+                                attackstate = 2;
+                                at_dir = false;
+                                dir_change = 0;
+                            }
+                        }
 
-                            break;
-                    }
+                        break;
+
+                    case 3:
+                        print("Ain't nobody got time fo dat!!!");
+                        attackstate = 2;
+
+                        break;
                 }
+               // }
 
                 break;
 
@@ -182,14 +218,14 @@ public class EnemyAnimController : MonoBehaviour
                         if (random_num > 0.2)
                         {
                             //1
-                            attperformance = 2;
+                            attperformance = 1;
                             if (random_num > 0.7)
                             {
                                 attperformance = 2;
                                 if (random_num > 0.8)
                                 {
                                     //3
-                                    attperformance = 2;
+                                    attperformance = 3;
                                 }
                             }
                         }
