@@ -15,19 +15,28 @@ public class EnemyAnimController : MonoBehaviour
     float init_pos_at;
     public float cooldownDef, cooldownCur;
     public int attperformance = 0;
-    bool at_dir = false;
+    bool at_dir = false;//, once = false;
     int dir_change = 0;
+    GameObject impact_area;
+    public GameObject initial_position;
+    Vector3 initial_pos;
+    private Camera_Movement maincamera;
     // Use this for initialization
     void Start()
     {
+        //playerState = GameObject.FindGameObjectsWithTag("GameEngine")[0].GetComponent<Player_State>();
+        maincamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera_Movement>();
         player = GameObject.FindGameObjectWithTag("Player");
         d_enemy = GameObject.FindGameObjectWithTag("enemy_ai");
         d_attack = GameObject.FindGameObjectWithTag("dummy_attack");
-       // enemy_ai = GameObject.FindGameObjectWithTag("enemy_ai");
+        impact_area = GameObject.FindGameObjectWithTag("impact_area");//d_attack.transform.GetChild(0).gameObject;
+        initial_pos = impact_area.transform.position;
+        // enemy_ai = GameObject.FindGameObjectWithTag("enemy_ai");
         cooldownCur = 3;
         cooldownDef = 0;
         init_pos_at = d_attack.transform.position.y;
         center = new Vector3(0, init_pos_at, 0);
+
 
     }
 
@@ -57,21 +66,33 @@ public class EnemyAnimController : MonoBehaviour
                                 if (d_attack.transform.position.y > 0.7f)
                                 {
                                     // Moving the club downwards
-                                    d_attack.transform.Translate(0f, 0f, sp_att1 * Time.deltaTime);
+                                    d_attack.transform.Translate(0f,-sp_att1 * Time.deltaTime,0f);
                                 }
                                 else
                                 {
                                     at_dir = true;
+                                    //impact_flag = true;
+                                    impact_area.GetComponent<Collider>().enabled=true;
                                 }
                             } else {
 
                                 if (d_attack.transform.position.y < init_pos_at)
                                 {
                                     //Moving the club upwards
-                                    d_attack.transform.Translate(0f, 0f, -e_att_speed * Time.deltaTime);
+                                    d_attack.transform.Translate(0f,+e_att_speed * Time.deltaTime,0f);
+                                    impact_area.transform.Translate(0f,-2* sp_att1 * Time.deltaTime,0f,Space.World);
                                 }
                                 else
                                 {
+                                    impact_area.GetComponent<Collider>().enabled=false;
+                                    if (maincamera.getState() == 4) { 
+                                        maincamera.adjustFlag();
+                                    }
+                                    
+                                //    d_attack.transform.Translate(0f,  0.5f,0f);
+                                    d_attack.transform.position = initial_position.transform.position;
+                                    impact_area.transform.position = d_attack.transform.position;
+                                    impact_area.transform.Translate(0f, 0.5f, 0f);
                                     attackstate = 2;
                                     print("Back to searching");
                                     at_dir = false;
@@ -85,7 +106,7 @@ public class EnemyAnimController : MonoBehaviour
                         sp_att2 = e_att_speed;
 
                         float distance = Vector3.Distance(d_attack.transform.position, player.transform.position);
-                        float d_angle = d_attack.transform.eulerAngles.y;
+                        float d_angle = d_attack.transform.eulerAngles.x;
                         float angle = Mathf.DeltaAngle(p_angle, d_angle);
                         if (at_dir == false)
                         {
@@ -99,12 +120,12 @@ public class EnemyAnimController : MonoBehaviour
 
                                     if (dir_change == 2)
                                     {                                      
-                                        d_attack.transform.Translate(0f, 0f, sp_att2*3 * Time.deltaTime);
+                                        d_attack.transform.Translate(0f, -sp_att2*3 * Time.deltaTime,0f);
 
                                     } else {
 
                                         //   print("Following Right dyn");
-                                        d_attack.transform.Translate(0f, 0f, sp_att2 * Time.deltaTime);
+                                        d_attack.transform.Translate(0f, -sp_att2 * Time.deltaTime, 0f);
                                         d_attack.transform.RotateAround(center, Vector3.up, -dyn_att_speed * Time.deltaTime);
                                     
                                     }
@@ -125,12 +146,12 @@ public class EnemyAnimController : MonoBehaviour
                                     if (dir_change == 1)
                                     {
                                         //Change direction - BRAKE
-                                        d_attack.transform.Translate(0f, 0f, sp_att2*3 * Time.deltaTime);
+                                        d_attack.transform.Translate(0f, -sp_att2*3 * Time.deltaTime, 0f);
                                     }
                                     else
                                     {
                                   //      print("Following Left dyn");
-                                        d_attack.transform.Translate(0f, 0f, sp_att2 * Time.deltaTime);
+                                        d_attack.transform.Translate(0f, -sp_att2 * Time.deltaTime, 0f);
                                         d_attack.transform.RotateAround(center, Vector3.up, +dyn_att_speed * Time.deltaTime);
                                     }
 
@@ -154,19 +175,19 @@ public class EnemyAnimController : MonoBehaviour
                                 //Moving the club upwards
                                 if (Mathf.DeltaAngle(p_angle, e_angle) > 0)
                                 {                                        
-                                    d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);
+                                    d_attack.transform.Translate(0f,  sp_att2 * Time.deltaTime, 0f);
                                 }
                                 if (Mathf.DeltaAngle(p_angle, e_angle) < 0)
                                 {                                       
-                                    d_attack.transform.Translate(0f, 0f, -sp_att2 * Time.deltaTime);                                  
+                                    d_attack.transform.Translate(0f,  sp_att2 * Time.deltaTime, 0f);                                  
                                 }
 
                             }
                             else
                             {
                                 //Rotate to original position
-                                d_attack.transform.RotateAround(center, Vector3.up, Mathf.DeltaAngle(d_angle, e_angle));
-
+                               // d_attack.transform.RotateAround(center, Vector3.up, Mathf.DeltaAngle(d_angle, e_angle));
+                                d_attack.transform.position = initial_position.transform.position;
                                 //Go back to searching
                                 attackstate = 2;
                                 at_dir = false;
@@ -269,7 +290,7 @@ public class EnemyAnimController : MonoBehaviour
     void basicAnimAttack(GameObject dummy)
     {
         float i = 0.0f;
-        d_attack.transform.Translate(0f, 0f, 5f * Time.deltaTime);
+        d_attack.transform.Translate(0f, 5f * Time.deltaTime, 0f);
         //   dummy.transform.Translate(Vector3.down * 5.0f * Time.deltaTime, Space.World);   
     }
 

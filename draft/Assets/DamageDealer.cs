@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageDealer : MonoBehaviour {
-    public int weakness = 1;
+    public int damage = 1;
    
    // ParticleSystem particle;
     Player_State ps;
@@ -24,17 +24,19 @@ public class DamageDealer : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            print("Got Hit by The MONSTAHHH");
+            if (ps.getState() != 0) { 
+                print("Got Hit by The MONSTAHHH");
           
-            if (other.GetComponent<Arrow_Power>().power == weaknessType)
-            {
-                ps.decHP(weakness);
+            
+                ps.decHP(damage);
+                ps.setState(0);
+
                 print("HIIITTT!!!! - " + ps.getHP());
-               // particle.Stop(false);
-               // particle.Play(false);
+                // particle.Stop(false);
+                // particle.Play(false);
             }
-            else { }
-           // Destroy(other.gameObject);
+
+
         }
     }
 }

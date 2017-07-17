@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weakness : MonoBehaviour {
     public int weakness = 1;
     public int weaknessType = 0;
+    public float hitprobability = 100f;
     ParticleSystem particle;
     Enemy_State es;
 	// Use this for initialization
@@ -23,11 +24,13 @@ public class Weakness : MonoBehaviour {
         if (other.tag == "Arrow") {
             print("Old!!! -> " + es.getHP());
             print("power collision :"+other.GetComponent<Arrow_Power>().power);
-            if (other.GetComponent<Arrow_Power>().power == weaknessType) { 
-                es.decHP(weakness);
-                print("HIIITTT!!!! - "+es.getHP());
-                particle.Stop(false);
-                particle.Play(false);
+            if (other.GetComponent<Arrow_Power>().power == weaknessType) {
+                if(Random.Range(0.1f,100f)<=hitprobability) { 
+                    es.decHP(weakness);
+                    print("HIIITTT!!!! - "+es.getHP());
+                    particle.Stop(false);
+                    particle.Play(false);
+                }
             }
             else { print("not enough altitude (power)"); }
             Destroy(other.gameObject);
